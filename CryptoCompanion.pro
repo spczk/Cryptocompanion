@@ -32,7 +32,10 @@ SOURCES += \
     adddialog.cpp \
     addresswidget.cpp \
     newaddresstab.cpp \
-    cryptography.cpp
+    cryptography.cpp \
+    recovery.cpp \
+    backup.cpp \
+    wallet.cpp
 
 HEADERS += \
         cryptocompanion.h \
@@ -42,7 +45,10 @@ HEADERS += \
     adddialog.h \
     addresswidget.h \
     newaddresstab.h \
-    cryptography.h
+    cryptography.h \
+    recovery.h \
+    backup.h \
+    wallet.h
 
 FORMS += \
         cryptocompanion.ui \
