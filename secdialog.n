@@ -1,0 +1,4 @@
+#ifndef SECDIALOG_N
+#define SECDIALOG_N
+
+#endif // SECDIALOG_N
