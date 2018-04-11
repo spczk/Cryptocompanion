@@ -2,8 +2,9 @@
 #define CRYPTOCOMPANION_H
 
 #include <QMainWindow>
-#include "secdialog.h"
+#include <QDialog>
 #include "user.h"
+#include "addresswidget.h"
 
 namespace Ui {
 class Cryptocompanion;
@@ -19,14 +20,24 @@ public:
 
 
 private slots:
-    void on_loginButton_clicked();
-
-    void on_registerButton_clicked();
+    void updateActions(const QItemSelection &selection);
+    void openFile();
+    void saveFile();
 
 
 private:
     Ui::Cryptocompanion *ui;
-    SecDialog *secDialog;
+    void createMenus();
+
+    AddressWidget *addressWidget;
+    QMenu *fileMenu;
+    QMenu *toolMenu;
+    QAction *openAct;
+    QAction *saveAct;
+    QAction *exitAct;
+    QAction *addAct;
+    QAction *editAct;
+    QAction *removeAct;
 };
 
 #endif // CRYPTOCOMPANION_H

@@ -37,7 +37,8 @@ SOURCES += \
     backup.cpp \
     wallet.cpp \
     cryptocurrency.cpp \
-    simplecrypt.cpp
+    simplecrypt.cpp \
+    registerdialog.cpp
 
 HEADERS += \
         cryptocompanion.h \
@@ -52,11 +53,10 @@ HEADERS += \
     backup.h \
     wallet.h \
     cryptocurrency.h \
-    simplecrypt.h
+    simplecrypt.h \
+    registerdialog.h
 
 FORMS += \
-        cryptocompanion.ui \
-    secdialog.ui \
-    secdialog.ui
+        cryptocompanion.ui
 
 RESOURCES +=
