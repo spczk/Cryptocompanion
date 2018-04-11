@@ -37,7 +37,7 @@ void AddressWidget::addEntry(QString name, QString address)
         table->setData(index, name, Qt::EditRole);
         index = table->index(0, 1, QModelIndex());
         table->setData(index, address, Qt::EditRole);
-        //removeTab(indexOf(newAddressTab));
+        removeTab(indexOf(newAddressTab));
     } else {
         QMessageBox::information(this, tr("Duplicate Name"),
             tr("The name \"%1\" already exists.").arg(name));

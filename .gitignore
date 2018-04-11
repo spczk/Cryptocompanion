@@ -32,3 +32,5 @@ cmake-build-debug/CMakeFiles/
 \.idea/
 
 \.DS_Store
+
+*.autosave

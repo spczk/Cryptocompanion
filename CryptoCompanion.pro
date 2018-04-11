@@ -35,7 +35,9 @@ SOURCES += \
     cryptography.cpp \
     recovery.cpp \
     backup.cpp \
-    wallet.cpp
+    wallet.cpp \
+    cryptocurrency.cpp \
+    simplecrypt.cpp
 
 HEADERS += \
         cryptocompanion.h \
@@ -48,7 +50,9 @@ HEADERS += \
     cryptography.h \
     recovery.h \
     backup.h \
-    wallet.h
+    wallet.h \
+    cryptocurrency.h \
+    simplecrypt.h
 
 FORMS += \
         cryptocompanion.ui \

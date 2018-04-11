@@ -4,9 +4,10 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication Cryptocompan(argc, argv);
+    Cryptocompan.setQuitOnLastWindowClosed(false);
     Cryptocompanion w;
     w.show();
 
-    return a.exec();
+    return Cryptocompan.exec();
 }

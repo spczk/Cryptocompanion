@@ -2,12 +2,14 @@
 #define USER_H
 
 #include <QString>
+#include "cryptography.h"
 
-class User
+class User : public Cryptography
 {
     QString firstName;
     QString lastName;
     QString password;
+    Cryptography crypto;
 public:
 
     User();
