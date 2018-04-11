@@ -7,6 +7,7 @@
 class Cryptography : public SimpleCrypt
 {
     QRandomGenerator generator;
+    SimpleCrypt simple;
 public:
     Cryptography();
 
