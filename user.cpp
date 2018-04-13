@@ -28,6 +28,20 @@ User::~User()
     //delete user;
 }
 
+User::User(quint64 keyIn,QString firstNameIn, QString lastNameIn, QString passwordIn)
+{
+  firstName = firstNameIn;
+  lastName = lastNameIn;
+  password = passwordIn;
+  key = keyIn;
+ // Cryptography crypto;
+}
+
+void User::setKey(quint64 keyIn)
+{
+    key = keyIn;
+}
+
 void User::setFirstName(QString fnameIn)
 {
     firstName=fnameIn;
@@ -56,6 +70,11 @@ QString User::getLastName()
 QString User::getPassword()
 {
     return password;
+}
+
+quint64 User::getKey()
+{
+    return key;
 }
 
 

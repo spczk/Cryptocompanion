@@ -26,15 +26,17 @@ public slots:
     void editEntry();
     void removeEntry();
     void login();
+    void getUserFileDetails(quint64 key ,QString encfirstName, QString enclastName, QString encpassword);
 
 signals:
     void selectionChanged (const QItemSelection &selected);
+    void sendUserFileDetails(quint64 key ,QString encfirstName, QString enclastName, QString encpassword);
 
 private:
     void setupTabs();
 
     SimpleCrypt simple;
-
+    User user;
     TableModel *table;
     NewAddressTab *newAddressTab;
     QSortFilterProxyModel *proxyModel;

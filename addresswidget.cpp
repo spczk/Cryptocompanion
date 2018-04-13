@@ -13,8 +13,10 @@ AddressWidget::AddressWidget(QWidget *parent)
     connect(newAddressTab, &NewAddressTab::sendDetails,
         this, &AddressWidget::addEntry);
 
-    addTab(newAddressTab, "Address Book");
+    User user;
+    connect(this, &AddressWidget::sendUserFileDetails, this, &AddressWidget::getUserFileDetails);
 
+    addTab(newAddressTab, "Address Book");
     setupTabs();
 }
 
@@ -174,7 +176,7 @@ void AddressWidget::writeToFile(const QString &fileName)
     }
 
     QDataStream out(&file);
-    out << table->getContacts();
+    out << user.getKey() << user.getFirstName() << user.getLastName() << user.getPassword() << table->getContacts();
 }
 
 void AddressWidget::login()
@@ -199,7 +201,17 @@ void AddressWidget::login()
     QString password;
     quint64 key;
     QDataStream in(&file);
-    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword;
+    QList<Contact> contacts;
+
+    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword >> contacts;
+
+    if (contacts.isEmpty()) {
+        QMessageBox::information(this, tr("No contacts in file"),
+                                 tr("The file you are attempting to open contains no contacts."));
+    } else {
+        for (const auto &contact: qAsConst(contacts))
+            addEntry(contact.name, contact.address);
+    }
 
     SimpleCrypt simple(key);
 
@@ -219,5 +231,16 @@ void AddressWidget::login()
         }
 
     qInfo() << firstName << lastName << password;
+    emit sendUserFileDetails(key, encryptedFirstName, encryptedLastName, encryptedPassword);
+
+}
+
+
+void AddressWidget::getUserFileDetails(quint64 key ,QString encfirstName, QString enclastName, QString encpassword)
+{
+   user.setKey(key);
+   user.setFirstName(encfirstName);
+   user.setLastName(enclastName);
+   user.setPassword(encpassword);
 
 }
