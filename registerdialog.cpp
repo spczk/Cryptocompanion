@@ -2,7 +2,7 @@
 
 #include <QtWidgets>
 
-LoginDialog::LoginDialog(QWidget *parent)
+RegisterDialog::RegisterDialog(QWidget *parent)
     : QDialog(parent)
 {
     firstNameLabel = new QLabel("First Name");

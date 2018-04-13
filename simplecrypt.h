@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QString>
 #include <QVector>
 #include <QFlags>
+#include <QRandomGenerator>
 
 /**
   @short Simple encryption and decryption of strings and byte arrays
@@ -201,6 +202,8 @@ public:
       an empty string or a string containing nonsense may be returned.
       */
     QByteArray decryptToByteArray(QByteArray cypher) ;
+
+    quint64 generateKey();
 
     //enum to describe options that have been used for the encryption. Currently only one, but
     //that only leaves room for future extensions like adding a cryptographic hash...

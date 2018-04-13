@@ -17,6 +17,7 @@ class Cryptocompanion : public QMainWindow
 public:
     explicit Cryptocompanion(QWidget *parent = 0);
     ~Cryptocompanion();
+        void login();
 
 
 private slots:

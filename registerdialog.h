@@ -9,12 +9,12 @@ class QPushButton;
 class QTextEdit;
 class QLineEdit;
 
-class LoginDialog : public QDialog
+class RegisterDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    LoginDialog(QWidget *parent = 0);
+    RegisterDialog(QWidget *parent = 0);
     QLineEdit *firstNameText;
     QLineEdit *lastNameText;
     QLineEdit *passwordText;

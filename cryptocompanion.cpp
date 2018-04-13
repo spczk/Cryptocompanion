@@ -18,7 +18,7 @@ Cryptocompanion::Cryptocompanion(QWidget *parent) :
     addressWidget = new AddressWidget;
     setCentralWidget(addressWidget);
     createMenus();
-    setWindowTitle(tr("Address Book"));
+    setWindowTitle("Cryptocompanion");
 }
 
 Cryptocompanion::~Cryptocompanion()
@@ -91,6 +91,11 @@ void Cryptocompanion::updateActions(const QItemSelection &selection)
         removeAct->setEnabled(false);
         editAct->setEnabled(false);
     }
+}
+
+void Cryptocompanion::login()
+{
+    addressWidget->login();
 }
 
 /*

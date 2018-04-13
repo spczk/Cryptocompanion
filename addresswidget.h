@@ -3,6 +3,7 @@
 
 #include "newaddresstab.h"
 #include "tablemodel.h"
+#include "simplecrypt.h"
 
 #include <QItemSelection>
 #include <QTabWidget>
@@ -24,12 +25,15 @@ public slots:
     void addEntry(QString name, QString address);
     void editEntry();
     void removeEntry();
+    void login();
 
 signals:
     void selectionChanged (const QItemSelection &selected);
 
 private:
     void setupTabs();
+
+    SimpleCrypt simple;
 
     TableModel *table;
     NewAddressTab *newAddressTab;

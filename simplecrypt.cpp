@@ -250,3 +250,10 @@ QByteArray SimpleCrypt::decryptToByteArray(QByteArray cypher)
     m_lastError = ErrorNoError;
     return ba;
 }
+
+
+quint64 SimpleCrypt::generateKey()
+{
+   QRandomGenerator generator = *QRandomGenerator::system();
+    return generator.generate64();
+}

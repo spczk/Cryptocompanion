@@ -13,6 +13,8 @@ class User : public Cryptography
 public:
 
     User();
+    User(QString firstNameIn, QString lastNameIn, QString passwordIn);
+    User(quint64 key);
     ~User();
     void setFirstName(QString fnameIn);
     void setLastName(QString lnameIn);
@@ -20,6 +22,9 @@ public:
     QString getFirstName();
     QString getLastName();
     QString getPassword();
+    quint64 getKey();
+    QString getEncryptedString(QString strIn);
+    QString getDecryptedString(QString strIn);
     void printInfo();
     void printName();
 };

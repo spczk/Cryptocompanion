@@ -5,6 +5,22 @@ User::User()
     firstName = "Jan";
     lastName ="Kowalski";
     password = "test";
+   // Cryptography crypto;
+}
+User::User(QString firstNameIn, QString lastNameIn, QString passwordIn)
+{
+  firstName = firstNameIn;
+  lastName = lastNameIn;
+  password = passwordIn;
+ // Cryptography crypto;
+}
+
+User::User(quint64 key)
+{
+    firstName = "Jan";
+    lastName ="Kowalski";
+    password = "test";
+ //   Cryptography crypto(key);
 }
 
 User::~User()
@@ -41,6 +57,17 @@ QString User::getPassword()
 {
     return password;
 }
+
+
+//QString User::getEncryptedString(QString strIn)
+//{
+//    return this->encryptString(strIn);
+//}
+
+//QString User::getDecryptedString(QString strIn)
+//{
+//    return this->decryptString(strIn);
+//}
 
 void User::printInfo()
 {

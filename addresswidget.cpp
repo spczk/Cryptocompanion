@@ -1,4 +1,5 @@
 #include "adddialog.h"
+#include "logindialog.h"
 #include "addresswidget.h"
 
 #include <QtWidgets>
@@ -6,6 +7,7 @@
 AddressWidget::AddressWidget(QWidget *parent)
     : QTabWidget(parent)
 {
+   //this->login();
     table = new TableModel(this);
     newAddressTab = new NewAddressTab(this);
     connect(newAddressTab, &NewAddressTab::sendDetails,
@@ -173,4 +175,49 @@ void AddressWidget::writeToFile(const QString &fileName)
 
     QDataStream out(&file);
     out << table->getContacts();
+}
+
+void AddressWidget::login()
+{
+    hide();
+    QString fileName = QFileDialog::getOpenFileName(this);
+
+    QFile file(fileName);
+
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(this, tr("Unable to open file"),
+            file.errorString());
+        return;
+    }
+
+
+    QString encryptedFirstName;
+    QString encryptedLastName;
+    QString encryptedPassword;
+    QString firstName;
+    QString lastName;
+    QString password;
+    quint64 key;
+    QDataStream in(&file);
+    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword;
+
+    SimpleCrypt simple(key);
+
+    firstName = simple.decryptToString(encryptedFirstName);
+    lastName = simple.decryptToString(encryptedLastName);
+    password = simple.decryptToString(encryptedPassword);
+
+    QString name = firstName + " " + lastName;
+
+    LoginDialog login;
+    if (login.exec())
+        {
+        QString nameInput = login.nameText->text();
+        QString passwordInput = login.passwordText->text();
+        if (nameInput == name && passwordInput == password)
+            show();
+        }
+
+    qInfo() << firstName << lastName << password;
+
 }
