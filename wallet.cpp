@@ -2,5 +2,6 @@
 
 Wallet::Wallet()
 {
-
+   // name = "";
 }
+

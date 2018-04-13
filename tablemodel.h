@@ -3,6 +3,8 @@
 
 #include <QAbstractTableModel>
 #include <QList>
+#include "user.h"
+#include "wallet.h"
 
 
 struct Contact
@@ -16,6 +18,8 @@ struct Contact
     }
 };
 
+
+
 inline QDataStream &operator<<(QDataStream &stream, const Contact &contact)
 {
     return stream << contact.name << contact.address;
@@ -25,6 +29,17 @@ inline QDataStream &operator>>(QDataStream &stream, Contact &contact)
 {
     return stream >> contact.name >> contact.address;
 }
+
+inline QDataStream &operator<<(QDataStream &stream, const Wallet &wallet)
+{
+    return stream << wallet.name << wallet.address << wallet.publicKey << wallet.privateKey << wallet.passPhrase << wallet.wordCode << wallet.cryptocurrencyName;
+}
+
+inline QDataStream &operator>>(QDataStream &stream, Wallet &wallet)
+{
+    return stream >> wallet.name >> wallet.address >> wallet.publicKey >> wallet.privateKey >> wallet.passPhrase >> wallet.wordCode >> wallet.cryptocurrencyName;
+}
+
 
 class TableModel : public QAbstractTableModel
 {
@@ -43,9 +58,11 @@ public:
     bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
     QList<Contact> getContacts() const;
+    QList<Wallet> getWallets() const;
 
 private:
     QList<Contact> contacts;
+    QList<Wallet> wallets;
 };
 
 #endif // TABLEMODEL_H

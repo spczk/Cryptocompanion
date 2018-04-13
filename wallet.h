@@ -6,6 +6,11 @@
 
 class Wallet
 {
+
+
+public:
+    Wallet();
+
     QString name;
     QVector<QString> publicKey;
     QVector<QString> passPhrase;
@@ -14,8 +19,13 @@ class Wallet
     QVector<QString> address;
     Cryptocurrency Crypto;
     QVector<QString> cryptocurrencyName;
-public:
-    Wallet();
+
+
+   bool operator ==(const Wallet &other) const
+    {
+        return name == other.name && address == other.address && publicKey == other.publicKey && privateKey == other.privateKey && passPhrase == other.passPhrase && wordCode == other.wordCode && cryptocurrencyName == other.cryptocurrencyName ;
+    }
+
 };
 
 #endif // WALLET_H
