@@ -4,7 +4,6 @@
 
 #include <QtWidgets>
 
-#include <iostream>
 
 
 StartDialog::StartDialog(QWidget *parent) : QDialog(parent)
@@ -60,15 +59,19 @@ void StartDialog::onRegisterClick()
            // Cryptography crypto;
             SimpleCrypt simple;
             quint64 key = simple.generateKey();
+            quint32 recoveryCode = simple.generateRecoveryCode();
+            QString recovery = QString::number(recoveryCode);
             simple.setKey(key);
 
-            QString encryptedFirstName= simple.encryptToString(firstName);
-            QString encryptedLastName= simple.encryptToString(lastName);
-            QString encryptedPassword= simple.encryptToString(password);
+            QMessageBox::information(this, "Your recovery code", "Your recovery code, save it somewhere to be able to reset your password: \n\n" + recovery);
 
+            QString encryptedFirstName= simple.encryptToString(firstName);
+            QString encryptedLastName = simple.encryptToString(lastName);
+            QString encryptedPassword = simple.encryptToString(password);
+            QString encryptedRecoveryCode = simple.encryptToString(recovery);
             QDataStream out(&file);
 
-            out << key << encryptedFirstName << encryptedLastName << encryptedPassword;
+            out << key << encryptedFirstName << encryptedLastName << encryptedPassword << encryptedRecoveryCode;
         }
         emit sendUserDetails(firstName, lastName, password);
     }

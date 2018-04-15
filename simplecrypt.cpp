@@ -257,3 +257,10 @@ quint64 SimpleCrypt::generateKey()
    QRandomGenerator generator = *QRandomGenerator::system();
     return generator.generate64();
 }
+
+
+quint32 SimpleCrypt::generateRecoveryCode()
+{
+    QRandomGenerator generator = *QRandomGenerator::system();
+     return generator.generate();
+}

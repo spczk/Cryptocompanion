@@ -44,17 +44,22 @@ void User::setKey(quint64 keyIn)
 
 void User::setFirstName(QString fnameIn)
 {
-    firstName=fnameIn;
+    firstName = fnameIn;
 }
 
 void User::setLastName(QString lnameIn)
 {
-    lastName=lnameIn;
+    lastName = lnameIn;
 }
 
 void User::setPassword(QString passwordIn)
 {
-    password=passwordIn;
+    password = passwordIn;
+}
+
+void User::setRecoveryCode(QString recoveryCodeIn)
+{
+    recoveryCode = recoveryCodeIn;
 }
 
 QString User::getFirstName()
@@ -75,6 +80,11 @@ QString User::getPassword()
 quint64 User::getKey()
 {
     return key;
+}
+
+QString User::getRecoveryCode()
+{
+    return recoveryCode;
 }
 
 

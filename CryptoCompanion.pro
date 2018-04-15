@@ -40,7 +40,8 @@ SOURCES += \
     simplecrypt.cpp \
     registerdialog.cpp \
     startdialog.cpp \
-    logindialog.cpp
+    logindialog.cpp \
+    changepassworddialog.cpp
 
 HEADERS += \
         cryptocompanion.h \
@@ -58,7 +59,8 @@ HEADERS += \
     simplecrypt.h \
     registerdialog.h \
     startdialog.h \
-    logindialog.h
+    logindialog.h \
+    changepassworddialog.h
 
 FORMS += \
         cryptocompanion.ui

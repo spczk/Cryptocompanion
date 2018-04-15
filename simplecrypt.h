@@ -205,6 +205,8 @@ public:
 
     quint64 generateKey();
 
+    quint32 generateRecoveryCode();
+
     //enum to describe options that have been used for the encryption. Currently only one, but
     //that only leaves room for future extensions like adding a cryptographic hash...
     enum CryptoFlag{CryptoFlagNone = 0,

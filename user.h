@@ -10,6 +10,7 @@ class User : public Cryptography
     QString lastName;
     QString password;
     quint64 key;
+    QString recoveryCode;
 public:
 
     User();
@@ -21,10 +22,12 @@ public:
     void setFirstName(QString fnameIn);
     void setLastName(QString lnameIn);
     void setPassword(QString passwordIn);
+    void setRecoveryCode(QString recoveryCodeIn);
     QString getFirstName();
     QString getLastName();
     QString getPassword();
     quint64 getKey();
+    QString getRecoveryCode();
     QString getEncryptedString(QString strIn);
     QString getDecryptedString(QString strIn);
     void printInfo();

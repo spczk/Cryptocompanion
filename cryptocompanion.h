@@ -29,12 +29,14 @@ private slots:
 private:
     Ui::Cryptocompanion *ui;
     void createMenus();
+    void changePass();
 
     AddressWidget *addressWidget;
     QMenu *fileMenu;
     QMenu *toolMenu;
     QAction *openAct;
     QAction *saveAct;
+    QAction *changeAct;
     QAction *exitAct;
     QAction *addAct;
     QAction *editAct;

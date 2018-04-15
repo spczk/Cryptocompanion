@@ -38,6 +38,10 @@ void Cryptocompanion::createMenus()
     fileMenu->addAction(saveAct);
     connect(saveAct, &QAction::triggered, this, &Cryptocompanion::saveFile);
 
+    changeAct = new QAction(tr("&Change Password..."), this);
+    fileMenu->addAction(changeAct);
+    connect(changeAct, &QAction::triggered, this, &Cryptocompanion::changePass);
+
     fileMenu->addSeparator();
 
     exitAct = new QAction(tr("E&xit"), this);
@@ -68,9 +72,10 @@ void Cryptocompanion::createMenus()
 
 void Cryptocompanion::openFile()
 {
-    QString fileName = QFileDialog::getOpenFileName(this);
-    if (!fileName.isEmpty())
-        addressWidget->readFromFile(fileName);
+//    QString fileName = QFileDialog::getOpenFileName(this);
+//    if (!fileName.isEmpty())
+//        addressWidget->readFromFile(fileName);
+    addressWidget->login();
 }
 
 void Cryptocompanion::saveFile()
@@ -96,6 +101,11 @@ void Cryptocompanion::updateActions(const QItemSelection &selection)
 void Cryptocompanion::login()
 {
     addressWidget->login();
+}
+
+void Cryptocompanion::changePass()
+{
+  addressWidget->changePassword();
 }
 
 /*

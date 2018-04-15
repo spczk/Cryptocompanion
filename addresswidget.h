@@ -19,6 +19,7 @@ public:
     AddressWidget(QWidget *parent = 0);
     void readFromFile(const QString &fileName);
     void writeToFile(const QString &fileName);
+    void changePassword();
 
 public slots:
     void showAddEntryDialog();
@@ -26,11 +27,11 @@ public slots:
     void editEntry();
     void removeEntry();
     void login();
-    void getUserFileDetails(quint64 key ,QString encfirstName, QString enclastName, QString encpassword);
+    void getUserFileDetails(quint64 key ,QString encFirstName, QString encLastName, QString encPassword, QString encRecoveryCode);
 
 signals:
     void selectionChanged (const QItemSelection &selected);
-    void sendUserFileDetails(quint64 key ,QString encfirstName, QString enclastName, QString encpassword);
+    void sendUserFileDetails(quint64 key ,QString encFirstName, QString encLastName, QString encPassword, QString encRecoveryCode);
 
 private:
     void setupTabs();

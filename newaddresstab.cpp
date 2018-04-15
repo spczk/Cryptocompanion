@@ -7,8 +7,8 @@ NewAddressTab::NewAddressTab(QWidget *parent)
 {
     Q_UNUSED(parent);
 
-    descriptionLabel = new QLabel(tr("There are currently no contacts in your address book. "
-                                      "\nClick Add to add new contacts."));
+    descriptionLabel = new QLabel(tr("There aren't currently any wallet information in your account. "
+                                      "\nClick Add to add wallet information."));
 
     addButton = new QPushButton(tr("Add"));
 

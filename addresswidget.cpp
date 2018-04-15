@@ -1,6 +1,7 @@
 #include "adddialog.h"
 #include "logindialog.h"
 #include "addresswidget.h"
+#include "changepassworddialog.h"
 
 #include <QtWidgets>
 
@@ -16,7 +17,7 @@ AddressWidget::AddressWidget(QWidget *parent)
     User user;
     connect(this, &AddressWidget::sendUserFileDetails, this, &AddressWidget::getUserFileDetails);
 
-    addTab(newAddressTab, "Address Book");
+    addTab(newAddressTab, "Wallet information");
     setupTabs();
 }
 
@@ -123,12 +124,42 @@ void AddressWidget::editEntry()
     aDialog.nameText->setReadOnly(true);
     aDialog.nameText->setText(name);
     aDialog.addressText->setText(address);
+    aDialog.publicKeyText->setText(publicKey);
+    aDialog.privateKeyText->setText(privateKey);
+    aDialog.passPhraseText->setText(passPhrase);
+    aDialog.wordCodeText->setText(wordCode);
+    aDialog.cryptocurrencyNameText->setText(cryptocurrencyName);
 
     if (aDialog.exec()) {
         QString newAddress = aDialog.addressText->text();
         if (newAddress != address) {
             QModelIndex index = table->index(row, 1, QModelIndex());
             table->setData(index, newAddress, Qt::EditRole);
+        }
+        QString newPublicKey = aDialog.publicKeyText->text();
+        if (newPublicKey != publicKey) {
+          QModelIndex  index = table->index(row, 2, QModelIndex());
+            table->setData(index, newPublicKey, Qt::EditRole);
+        }
+        QString newPrivateKey = aDialog.privateKeyText->text();
+        if (newPrivateKey != privateKey) {
+           QModelIndex index = table->index(row, 3, QModelIndex());
+            table->setData(index, newPrivateKey, Qt::EditRole);
+        }
+        QString newPassPhrase = aDialog.passPhraseText->text();
+        if (newPassPhrase != passPhrase) {
+           QModelIndex index = table->index(row, 4, QModelIndex());
+            table->setData(index, newPassPhrase, Qt::EditRole);
+        }
+        QString newWordCode = aDialog.wordCodeText->text();
+        if (newWordCode != wordCode) {
+           QModelIndex index = table->index(row, 5, QModelIndex());
+            table->setData(index, newWordCode, Qt::EditRole);
+        }
+        QString newCryptocurrencyName = aDialog.cryptocurrencyNameText->text();
+        if (newCryptocurrencyName != cryptocurrencyName) {
+          QModelIndex  index = table->index(row, 6, QModelIndex());
+            table->setData(index, newCryptocurrencyName, Qt::EditRole);
         }
     }
 }
@@ -201,12 +232,19 @@ void AddressWidget::readFromFile(const QString &fileName)
     }
 
     QList<Wallet> wallets;
+
+    quint64 key;
+    QString encryptedFirstName;
+    QString encryptedLastName;
+    QString encryptedPassword;
+    QString encryptedRecoveryCode;
+
     QDataStream in(&file);
-    in >> wallets;
+    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword >> encryptedRecoveryCode >> wallets;
 
     if (wallets.isEmpty()) {
-        QMessageBox::information(this, tr("No wallets in file"),
-                                 tr("The file you are attempting to open contains no contacts."));
+        QMessageBox::information(this, tr("No wallet information in file"),
+                                 tr("The file you are attempting to open contains no wallet information."));
     } else {
         for (const auto &wallet: qAsConst(wallets))
             addEntry(wallet.name, wallet.address, wallet.publicKey, wallet.privateKey, wallet.passPhrase, wallet.wordCode, wallet.cryptocurrencyName);
@@ -223,7 +261,7 @@ void AddressWidget::writeToFile(const QString &fileName)
     }
 
     QDataStream out(&file);
-    out << user.getKey() << user.getFirstName() << user.getLastName() << user.getPassword() << table->getWallets();
+    out << user.getKey() << user.getFirstName() << user.getLastName() << user.getPassword() << user.getRecoveryCode() << table->getWallets();
 }
 
 void AddressWidget::login()
@@ -243,6 +281,7 @@ void AddressWidget::login()
     QString encryptedFirstName;
     QString encryptedLastName;
     QString encryptedPassword;
+    QString encryptedRecoveryCode;
     QString firstName;
     QString lastName;
     QString password;
@@ -250,7 +289,7 @@ void AddressWidget::login()
     QDataStream in(&file);
     QList<Wallet> wallets;
 
-    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword >> wallets;
+    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword >> encryptedRecoveryCode >> wallets;
 
     if (wallets.isEmpty()) {
         QMessageBox::information(this, tr("No contacts in file"),
@@ -278,16 +317,49 @@ void AddressWidget::login()
         }
 
     qInfo() << firstName << lastName << password;
-    emit sendUserFileDetails(key, encryptedFirstName, encryptedLastName, encryptedPassword);
-
+    emit sendUserFileDetails(key, encryptedFirstName, encryptedLastName, encryptedPassword, encryptedRecoveryCode);
 }
 
 
-void AddressWidget::getUserFileDetails(quint64 key ,QString encfirstName, QString enclastName, QString encpassword)
+void AddressWidget::getUserFileDetails(quint64 key ,QString encFirstName, QString encLastName, QString encPassword, QString encRecoveryCode)
 {
    user.setKey(key);
-   user.setFirstName(encfirstName);
-   user.setLastName(enclastName);
-   user.setPassword(encpassword);
+   user.setFirstName(encFirstName);
+   user.setLastName(encLastName);
+   user.setPassword(encPassword);
+   user.setRecoveryCode(encRecoveryCode);
 
+}
+
+void AddressWidget::changePassword()
+{
+    ChangePasswordDialog changeDialog;
+    SimpleCrypt simple(user.getKey());
+
+    if (changeDialog.exec()) {
+        QString recoveryCode = changeDialog.recoveryCodeText->text();
+        QString newPassword = changeDialog.newPasswordText->text();
+
+        if (recoveryCode == simple.decryptToString(user.getRecoveryCode()))
+        {
+            QString encryptedNewPassword = simple.encryptToString(newPassword);
+            user.setPassword(encryptedNewPassword);
+            QMessageBox::information(this, "Change password", "Password changed succesfully");
+
+
+
+
+            QString fileName = QFileDialog::getSaveFileName(this);
+            QFile file(fileName);
+
+            if (!file.open(QIODevice::WriteOnly)) {
+                QMessageBox::information(this, tr("Unable to open file"), file.errorString());
+                return;
+            }
+
+            QDataStream out(&file);
+            out << user.getKey() << user.getFirstName() << user.getLastName() << user.getPassword() << user.getRecoveryCode() << table->getWallets();
+
+        }
+    } else QMessageBox::warning(this, "Change password", "Wrong recovery code, password hasn't changed");
 }
