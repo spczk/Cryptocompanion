@@ -15,11 +15,21 @@ class AddDialog : public QDialog
 public:
     AddDialog(QWidget *parent = 0);
     QLineEdit *nameText;
-    QTextEdit *addressText;
+    QLineEdit *addressText;
+    QLineEdit *publicKeyText;
+    QLineEdit *passPhraseText;
+    QLineEdit *privateKeyText;
+    QLineEdit *wordCodeText;
+    QLineEdit *cryptocurrencyNameText;
 
 private:
     QLabel *nameLabel;
     QLabel *addressLabel;
+    QLabel *publicKeyLabel;
+    QLabel *privateKeyLabel;
+    QLabel *passPhraseLabel;
+    QLabel *wordCodeLabel;
+    QLabel *cryptocurrencyNameLabel;
     QPushButton *okButton;
     QPushButton *cancelButton;
 };

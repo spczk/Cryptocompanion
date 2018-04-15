@@ -27,8 +27,12 @@ void NewAddressTab::addEntry()
 
     if (aDialog.exec()) {
         QString name = aDialog.nameText->text();
-        QString address = aDialog.addressText->toPlainText();
-
-        emit sendDetails(name, address);
+        QString address = aDialog.addressText->text();
+        QString publicKey = aDialog.publicKeyText->text();
+        QString passPhrase = aDialog.passPhraseText->text();
+        QString privateKey = aDialog.privateKeyText->text();
+        QString wordCode = aDialog.wordCodeText->text();
+        QString cryptocurrencyName=  aDialog.cryptocurrencyNameText->text();
+        emit sendDetails(name, address, publicKey, privateKey, passPhrase, wordCode, cryptocurrencyName);
     }
 }

@@ -2,9 +2,11 @@
 #define WALLET_H
 
 #include <QVector>
+#include <QList>
+#include <QVariant>
 #include "cryptocurrency.h"
 
-class Wallet
+struct Wallet
 {
 
 
@@ -12,13 +14,12 @@ public:
     Wallet();
 
     QString name;
-    QVector<QString> publicKey;
-    QVector<QString> passPhrase;
-    QVector<QString> privateKey;
-    QVector<QString> wordCode;
-    QVector<QString> address;
-    Cryptocurrency Crypto;
-    QVector<QString> cryptocurrencyName;
+    QString address;
+    QString publicKey;
+    QString passPhrase;
+    QString privateKey;
+    QString wordCode;
+    QString cryptocurrencyName;
 
 
    bool operator ==(const Wallet &other) const

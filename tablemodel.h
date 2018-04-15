@@ -4,31 +4,36 @@
 #include <QAbstractTableModel>
 #include <QList>
 #include "user.h"
-#include "wallet.h"
+//#include "wallet.h"
 
 
-struct Contact
+struct Wallet
 {
     QString name;
+    QString publicKey;
+    QString passPhrase;
+    QString privateKey;
+    QString wordCode;
     QString address;
+    QString cryptocurrencyName;
 
-    bool operator==(const Contact &other) const
-    {
-        return name == other.name && address == other.address;
-    }
+    bool operator ==(const Wallet &other) const
+     {
+         return name == other.name && address == other.address && publicKey == other.publicKey && privateKey == other.privateKey && passPhrase == other.passPhrase && wordCode == other.wordCode && cryptocurrencyName == other.cryptocurrencyName ;
+     }
 };
 
 
 
-inline QDataStream &operator<<(QDataStream &stream, const Contact &contact)
-{
-    return stream << contact.name << contact.address;
-}
+//inline QDataStream &operator<<(QDataStream &stream, const Contact &contact)
+//{
+//    return stream << contact.name << contact.address;
+//}
 
-inline QDataStream &operator>>(QDataStream &stream, Contact &contact)
-{
-    return stream >> contact.name >> contact.address;
-}
+//inline QDataStream &operator>>(QDataStream &stream, Contact &contact)
+//{
+//    return stream >> contact.name >> contact.address;
+//}
 
 inline QDataStream &operator<<(QDataStream &stream, const Wallet &wallet)
 {
@@ -47,7 +52,8 @@ class TableModel : public QAbstractTableModel
 
 public:
     TableModel(QObject *parent = 0);
-    TableModel(QList<Contact> contacts, QObject *parent = 0);
+    //TableModel(QList<Contact> contacts, QObject *parent = 0);
+    TableModel(QList<Wallet> wallets, QObject *parent = 0);
 
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
@@ -57,11 +63,13 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
-    QList<Contact> getContacts() const;
+   // QList<Contact> getContacts() const;
     QList<Wallet> getWallets() const;
 
+    //Wallet wallet;
+
 private:
-    QList<Contact> contacts;
+   // QList<Contact> contacts;
     QList<Wallet> wallets;
 };
 

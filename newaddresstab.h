@@ -18,7 +18,7 @@ public slots:
     void addEntry();
 
 signals:
-    void sendDetails(QString name, QString address);
+    void sendDetails(QString name, QString address, QString publicKey, QString privateKey, QString passPhrase, QString wordCode, QString cryptocurrencyName);
 
 private:
     QLabel *descriptionLabel;

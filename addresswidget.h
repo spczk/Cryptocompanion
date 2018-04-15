@@ -22,7 +22,7 @@ public:
 
 public slots:
     void showAddEntryDialog();
-    void addEntry(QString name, QString address);
+    void addEntry(QString name, QString address, QString publicKey, QString privateKey, QString passPhrase, QString wordCode, QString cryptocurrencyName);
     void editEntry();
     void removeEntry();
     void login();

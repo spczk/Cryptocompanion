@@ -2,6 +2,11 @@
 
 Wallet::Wallet()
 {
-   // name = "";
+   name = "";
+   publicKey = "";
+   privateKey = "";
+   passPhrase = "";
+   wordCode = "" ;
+   cryptocurrencyName = "";
 }
 

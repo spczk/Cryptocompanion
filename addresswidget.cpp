@@ -26,21 +26,43 @@ void AddressWidget::showAddEntryDialog()
 
     if (aDialog.exec()) {
         QString name = aDialog.nameText->text();
-        QString address = aDialog.addressText->toPlainText();
+        QString address = aDialog.addressText->text();
+        QString publicKey = aDialog.publicKeyText->text();
+        QString passPhrase = aDialog.passPhraseText->text();
+        QString privateKey = aDialog.privateKeyText->text();
+        QString wordCode = aDialog.wordCodeText->text();
+        QString cryptocurrencyName=  aDialog.cryptocurrencyNameText->text();
 
-        addEntry(name, address);
+        addEntry(name, address, publicKey, privateKey, passPhrase, wordCode, cryptocurrencyName);
     }
 }
 
-void AddressWidget::addEntry(QString name, QString address)
+void AddressWidget::addEntry(QString name, QString address, QString publicKey, QString privateKey, QString passPhrase, QString wordCode, QString cryptocurrencyName)
 {
-    if (!table->getContacts().contains({ name, address })) {
+    if (!table->getWallets().contains({ name, address, publicKey, privateKey, passPhrase, wordCode, cryptocurrencyName})) {
         table->insertRows(0, 1, QModelIndex());
 
         QModelIndex index = table->index(0, 0, QModelIndex());
         table->setData(index, name, Qt::EditRole);
         index = table->index(0, 1, QModelIndex());
         table->setData(index, address, Qt::EditRole);
+
+        index = table->index(0, 2, QModelIndex());
+        table->setData(index, publicKey, Qt::EditRole);
+
+        index = table->index(0, 3, QModelIndex());
+        table->setData(index, privateKey, Qt::EditRole);
+
+        index = table->index(0, 4, QModelIndex());
+        table->setData(index, passPhrase, Qt::EditRole);
+
+        index = table->index(0, 5, QModelIndex());
+        table->setData(index, wordCode, Qt::EditRole);
+
+        index = table->index(0, 6, QModelIndex());
+        table->setData(index, cryptocurrencyName, Qt::EditRole);
+
+
         removeTab(indexOf(newAddressTab));
     } else {
         QMessageBox::information(this, tr("Duplicate Name"),
@@ -57,6 +79,11 @@ void AddressWidget::editEntry()
     QModelIndexList indexes = selectionModel->selectedRows();
     QString name;
     QString address;
+    QString publicKey;
+    QString passPhrase;
+    QString privateKey;
+    QString wordCode;
+    QString cryptocurrencyName;
     int row = -1;
 
     foreach (QModelIndex index, indexes) {
@@ -68,6 +95,26 @@ void AddressWidget::editEntry()
         QModelIndex addressIndex = table->index(row, 1, QModelIndex());
         QVariant varAddr = table->data(addressIndex, Qt::DisplayRole);
         address = varAddr.toString();
+
+        QModelIndex publicKeyIndex = table->index(row, 3, QModelIndex());
+        QVariant varPubKey = table->data(publicKeyIndex, Qt::DisplayRole);
+        publicKey = varPubKey.toString();
+
+        QModelIndex privateKeyIndex = table->index(row, 4, QModelIndex());
+        QVariant varPrivKey = table->data(privateKeyIndex, Qt::DisplayRole);
+        privateKey = varPrivKey.toString();
+
+        QModelIndex passPhraseIndex = table->index(row, 5, QModelIndex());
+        QVariant varPassPhrase = table->data(passPhraseIndex, Qt::DisplayRole);
+        passPhrase = varPassPhrase.toString();
+
+        QModelIndex wordCodeIndex = table->index(row, 6, QModelIndex());
+        QVariant varWordCode = table->data(wordCodeIndex, Qt::DisplayRole);
+        wordCode = varWordCode.toString();
+
+        QModelIndex cryptoCurrencyNameIndex = table->index(row, 7, QModelIndex());
+        QVariant varCurrName = table->data(cryptoCurrencyNameIndex, Qt::DisplayRole);
+        cryptocurrencyName = varCurrName.toString();
     }
 
     AddDialog aDialog;
@@ -78,7 +125,7 @@ void AddressWidget::editEntry()
     aDialog.addressText->setText(address);
 
     if (aDialog.exec()) {
-        QString newAddress = aDialog.addressText->toPlainText();
+        QString newAddress = aDialog.addressText->text();
         if (newAddress != address) {
             QModelIndex index = table->index(row, 1, QModelIndex());
             table->setData(index, newAddress, Qt::EditRole);
@@ -153,16 +200,16 @@ void AddressWidget::readFromFile(const QString &fileName)
         return;
     }
 
-    QList<Contact> contacts;
+    QList<Wallet> wallets;
     QDataStream in(&file);
-    in >> contacts;
+    in >> wallets;
 
-    if (contacts.isEmpty()) {
-        QMessageBox::information(this, tr("No contacts in file"),
+    if (wallets.isEmpty()) {
+        QMessageBox::information(this, tr("No wallets in file"),
                                  tr("The file you are attempting to open contains no contacts."));
     } else {
-        for (const auto &contact: qAsConst(contacts))
-            addEntry(contact.name, contact.address);
+        for (const auto &wallet: qAsConst(wallets))
+            addEntry(wallet.name, wallet.address, wallet.publicKey, wallet.privateKey, wallet.passPhrase, wallet.wordCode, wallet.cryptocurrencyName);
     }
 }
 
@@ -176,7 +223,7 @@ void AddressWidget::writeToFile(const QString &fileName)
     }
 
     QDataStream out(&file);
-    out << user.getKey() << user.getFirstName() << user.getLastName() << user.getPassword() << table->getContacts();
+    out << user.getKey() << user.getFirstName() << user.getLastName() << user.getPassword() << table->getWallets();
 }
 
 void AddressWidget::login()
@@ -201,16 +248,16 @@ void AddressWidget::login()
     QString password;
     quint64 key;
     QDataStream in(&file);
-    QList<Contact> contacts;
+    QList<Wallet> wallets;
 
-    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword >> contacts;
+    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword >> wallets;
 
-    if (contacts.isEmpty()) {
+    if (wallets.isEmpty()) {
         QMessageBox::information(this, tr("No contacts in file"),
                                  tr("The file you are attempting to open contains no contacts."));
     } else {
-        for (const auto &contact: qAsConst(contacts))
-            addEntry(contact.name, contact.address);
+        for (const auto &wallet: qAsConst(wallets))
+            addEntry(wallet.name, wallet.address, wallet.publicKey, wallet.privateKey, wallet.passPhrase, wallet.wordCode, wallet.cryptocurrencyName);
     }
 
     SimpleCrypt simple(key);

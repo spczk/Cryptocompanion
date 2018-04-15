@@ -5,22 +5,28 @@ TableModel::TableModel(QObject *parent)
 {
 }
 
-TableModel::TableModel(QList<Contact> contacts, QObject *parent)
+//TableModel::TableModel(QList<Contact> contacts, QObject *parent)
+//    : QAbstractTableModel(parent)
+//    , contacts(contacts)
+//{
+//}
+
+TableModel::TableModel(QList<Wallet> wallets, QObject *parent)
     : QAbstractTableModel(parent)
-    , contacts(contacts)
+    , wallets(wallets)
 {
 }
 
 int TableModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return contacts.size();
+    return wallets.size();
 }
 
 int TableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return 2;
+    return 7;
 }
 
 QVariant TableModel::data(const QModelIndex &index, int role) const
@@ -28,16 +34,26 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (index.row() >= contacts.size() || index.row() < 0)
+    if (index.row() >= wallets.size() || index.row() < 0)
         return QVariant();
 
     if (role == Qt::DisplayRole) {
-        const auto &contact = contacts.at(index.row());
+        const auto &wallet = wallets.at(index.row());
 
         if (index.column() == 0)
-            return contact.name;
+            return wallet.name;
         else if (index.column() == 1)
-            return contact.address;
+            return wallet.address;
+        else if (index.column() == 2)
+            return wallet.publicKey;
+        else if (index.column() == 3)
+            return wallet.privateKey;
+        else if (index.column() == 4)
+            return wallet.passPhrase;
+        else if (index.column() == 5)
+            return wallet.wordCode;
+        else if (index.column() == 6)
+            return wallet.cryptocurrencyName;
     }
     return QVariant();
 }
@@ -55,6 +71,21 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
             case 1:
                 return tr("Address");
 
+            case 2:
+                return tr("Public Key");
+
+            case 3:
+                return tr("Private Key");
+
+            case 4:
+                return tr("Pass Phrase");
+
+            case 5:
+                return tr("Word Code");
+
+            case 6:
+                return tr("Cryptocurrencies");
+
             default:
                 return QVariant();
         }
@@ -65,10 +96,11 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 bool TableModel::insertRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED(index);
+    QList<Wallet>::iterator i;
     beginInsertRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row)
-        contacts.insert(position, { QString(), QString() });
+        wallets.insert(position, {QString(), QString(), QString(), QString(), QString(), QString(), QString()} );
 
     endInsertRows();
     return true;
@@ -80,7 +112,7 @@ bool TableModel::removeRows(int position, int rows, const QModelIndex &index)
     beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row)
-        contacts.removeAt(position);
+        wallets.removeAt(position);
 
     endRemoveRows();
     return true;
@@ -91,16 +123,26 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
     if (index.isValid() && role == Qt::EditRole) {
         int row = index.row();
 
-        auto contact = contacts.value(row);
+        auto wallet = wallets.value(row);
 
         if (index.column() == 0)
-            contact.name = value.toString();
+            wallet.name = value.toString();
         else if (index.column() == 1)
-            contact.address = value.toString();
+            wallet.address = value.toString();
+        else if (index.column() == 2)
+            wallet.publicKey = value.toString();
+        else if (index.column() == 3)
+            wallet.privateKey = value.toString();
+        else if (index.column() == 4)
+            wallet.passPhrase = value.toString();
+        else if (index.column() == 5)
+            wallet.wordCode = value.toString();
+        else if (index.column() == 6)
+            wallet.cryptocurrencyName = value.toString();
         else
             return false;
 
-        contacts.replace(row, contact);
+        wallets.replace(row, wallet);
         emit(dataChanged(index, index));
 
         return true;
@@ -117,7 +159,13 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
     return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
 }
 
-QList<Contact> TableModel::getContacts() const
+//QList<Contact> TableModel::getContacts() const
+//{
+//    return contacts;
+//}
+
+
+QList<Wallet> TableModel::getWallets() const
 {
-    return contacts;
+    return wallets;
 }
