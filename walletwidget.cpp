@@ -1,27 +1,27 @@
 #include "adddialog.h"
 #include "logindialog.h"
-#include "addresswidget.h"
+#include "walletwidget.h"
 #include "changepassworddialog.h"
 
 #include <QtWidgets>
+#include <QProcess>
 
-AddressWidget::AddressWidget(QWidget *parent)
+WalletWidget::WalletWidget(QWidget *parent)
     : QTabWidget(parent)
 {
-   //this->login();
     table = new TableModel(this);
     newAddressTab = new NewAddressTab(this);
     connect(newAddressTab, &NewAddressTab::sendDetails,
-        this, &AddressWidget::addEntry);
+        this, &WalletWidget::addEntry);
 
     User user;
-    connect(this, &AddressWidget::sendUserFileDetails, this, &AddressWidget::getUserFileDetails);
+    connect(this, &WalletWidget::sendUserFileDetails, this, &WalletWidget::getUserFileDetails);
 
     addTab(newAddressTab, "Wallet information");
     setupTabs();
 }
 
-void AddressWidget::showAddEntryDialog()
+void WalletWidget::showAddEntryDialog()
 {
     AddDialog aDialog;
 
@@ -38,7 +38,7 @@ void AddressWidget::showAddEntryDialog()
     }
 }
 
-void AddressWidget::addEntry(QString name, QString address, QString publicKey, QString privateKey, QString passPhrase, QString wordCode, QString cryptocurrencyName)
+void WalletWidget::addEntry(QString name, QString address, QString publicKey, QString privateKey, QString passPhrase, QString wordCode, QString cryptocurrencyName)
 {
     if (!table->getWallets().contains({ name, address, publicKey, privateKey, passPhrase, wordCode, cryptocurrencyName})) {
         table->insertRows(0, 1, QModelIndex());
@@ -71,7 +71,7 @@ void AddressWidget::addEntry(QString name, QString address, QString publicKey, Q
     }
 }
 
-void AddressWidget::editEntry()
+void WalletWidget::editEntry()
 {
     QTableView *temp = static_cast<QTableView*>(currentWidget());
     QSortFilterProxyModel *proxy = static_cast<QSortFilterProxyModel*>(temp->model());
@@ -119,7 +119,7 @@ void AddressWidget::editEntry()
     }
 
     AddDialog aDialog;
-    aDialog.setWindowTitle(tr("Edit a Contact"));
+    aDialog.setWindowTitle(tr("Edit Wallet information"));
 
     aDialog.nameText->setReadOnly(true);
     aDialog.nameText->setText(name);
@@ -164,7 +164,7 @@ void AddressWidget::editEntry()
     }
 }
 
-void AddressWidget::removeEntry()
+void WalletWidget::removeEntry()
 {
     QTableView *temp = static_cast<QTableView*>(currentWidget());
     QSortFilterProxyModel *proxy = static_cast<QSortFilterProxyModel*>(temp->model());
@@ -178,11 +178,11 @@ void AddressWidget::removeEntry()
     }
 
     if (table->rowCount(QModelIndex()) == 0) {
-        insertTab(0, newAddressTab, "Address Book");
+        insertTab(0, newAddressTab, "Wallet information");
     }
 }
 
-void AddressWidget::setupTabs()
+void WalletWidget::setupTabs()
 {
     QStringList groups;
     groups << "ABC" << "DEF" << "GHI" << "JKL" << "MNO" << "PQR" << "STU" << "VW" << "XYZ";
@@ -209,7 +209,7 @@ void AddressWidget::setupTabs()
 
         connect(tableView->selectionModel(),
             &QItemSelectionModel::selectionChanged,
-            this, &AddressWidget::selectionChanged);
+            this, &WalletWidget::selectionChanged);
 
         connect(this, &QTabWidget::currentChanged, this, [this](int tabIndex) {
             auto *tableView = qobject_cast<QTableView *>(widget(tabIndex));
@@ -221,7 +221,7 @@ void AddressWidget::setupTabs()
     }
 }
 
-void AddressWidget::readFromFile(const QString &fileName)
+void WalletWidget::readFromFile(const QString &fileName)
 {
     QFile file(fileName);
 
@@ -251,7 +251,7 @@ void AddressWidget::readFromFile(const QString &fileName)
     }
 }
 
-void AddressWidget::writeToFile(const QString &fileName)
+void WalletWidget::writeToFile(const QString &fileName)
 {
     QFile file(fileName);
 
@@ -264,7 +264,7 @@ void AddressWidget::writeToFile(const QString &fileName)
     out << user.getKey() << user.getFirstName() << user.getLastName() << user.getPassword() << user.getRecoveryCode() << table->getWallets();
 }
 
-void AddressWidget::login()
+void WalletWidget::login()
 {
     hide();
     QString fileName = QFileDialog::getOpenFileName(this);
@@ -292,8 +292,8 @@ void AddressWidget::login()
     in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword >> encryptedRecoveryCode >> wallets;
 
     if (wallets.isEmpty()) {
-        QMessageBox::information(this, tr("No contacts in file"),
-                                 tr("The file you are attempting to open contains no contacts."));
+        QMessageBox::information(this, tr("No wallet information in file"),
+                                 tr("The file you are attempting to open contains no wallet information."));
     } else {
         for (const auto &wallet: qAsConst(wallets))
             addEntry(wallet.name, wallet.address, wallet.publicKey, wallet.privateKey, wallet.passPhrase, wallet.wordCode, wallet.cryptocurrencyName);
@@ -314,14 +314,20 @@ void AddressWidget::login()
         QString passwordInput = login.passwordText->text();
         if (nameInput == name && passwordInput == password)
             show();
+        else
+            {
+                QMessageBox::warning(this, "Login failed", "Wrong Name/Password. Try Again.");
+                QMetaObject::invokeMethod(qApp, "quit",
+                    Qt::QueuedConnection);
+                QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+            }
         }
 
-    qInfo() << firstName << lastName << password;
     emit sendUserFileDetails(key, encryptedFirstName, encryptedLastName, encryptedPassword, encryptedRecoveryCode);
 }
 
 
-void AddressWidget::getUserFileDetails(quint64 key ,QString encFirstName, QString encLastName, QString encPassword, QString encRecoveryCode)
+void WalletWidget::getUserFileDetails(quint64 key ,QString encFirstName, QString encLastName, QString encPassword, QString encRecoveryCode)
 {
    user.setKey(key);
    user.setFirstName(encFirstName);
@@ -331,7 +337,7 @@ void AddressWidget::getUserFileDetails(quint64 key ,QString encFirstName, QStrin
 
 }
 
-void AddressWidget::changePassword()
+void WalletWidget::changePassword()
 {
     ChangePasswordDialog changeDialog;
     SimpleCrypt simple(user.getKey());

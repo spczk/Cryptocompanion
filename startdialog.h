@@ -4,14 +4,13 @@
 #include <QDialog>
 #include <QWidget>
 
-#include "addresswidget.h"
+#include "walletwidget.h"
 #include "user.h"
 #include "simplecrypt.h"
-#include "cryptography.h"
 
 class QPushButton;
 
-class StartDialog : public QDialog, public Cryptography
+class StartDialog : public QDialog
 {
     Q_OBJECT
 
@@ -20,7 +19,6 @@ public:
 
 public slots:
     void onRegisterClick();
-    //void onStartClick();
 
 signals:
     void sendUserDetails(QString firstName, QString lastName, QString password);
@@ -28,10 +26,9 @@ signals:
 private:
     User user;
     SimpleCrypt simple;
-    Cryptography crypto;
     QPushButton *registerButton;
     QPushButton *startButton;
-    QPushButton *cancelButton;
+    QPushButton *quitButton;
 
 };
 

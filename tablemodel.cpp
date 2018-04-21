@@ -5,11 +5,6 @@ TableModel::TableModel(QObject *parent)
 {
 }
 
-//TableModel::TableModel(QList<Contact> contacts, QObject *parent)
-//    : QAbstractTableModel(parent)
-//    , contacts(contacts)
-//{
-//}
 
 TableModel::TableModel(QList<Wallet> wallets, QObject *parent)
     : QAbstractTableModel(parent)
@@ -159,10 +154,6 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
     return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
 }
 
-//QList<Contact> TableModel::getContacts() const
-//{
-//    return contacts;
-//}
 
 
 QList<Wallet> TableModel::getWallets() const

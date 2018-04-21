@@ -1,5 +1,3 @@
-#include "secdialog.h"
-#include "ui_secdialog.h"
 #include "user.h"
 #include "cryptocompanion.h"
 #include <QAction>

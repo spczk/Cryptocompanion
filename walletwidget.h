@@ -1,5 +1,5 @@
-#ifndef ADDRESSWIDGET_H
-#define ADDRESSWIDGET_H
+#ifndef WALLETWIDGET_H
+#define WALLETWIDGET_H
 
 #include "newaddresstab.h"
 #include "tablemodel.h"
@@ -11,12 +11,12 @@
 class QSortFilterProxyModel;
 class QItemSelectionModel;
 
-class AddressWidget : public QTabWidget
+class WalletWidget : public QTabWidget
 {
     Q_OBJECT
 
 public:
-    AddressWidget(QWidget *parent = 0);
+    WalletWidget(QWidget *parent = 0);
     void readFromFile(const QString &fileName);
     void writeToFile(const QString &fileName);
     void changePassword();
@@ -43,4 +43,4 @@ private:
     QSortFilterProxyModel *proxyModel;
 };
 
-#endif // ADDRESSWIDGET_H
+#endif // WALLETWIDGET_H

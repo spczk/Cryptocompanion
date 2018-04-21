@@ -26,41 +26,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         cryptocompanion.cpp \
-    secdialog.cpp \
     user.cpp \
     tablemodel.cpp \
     adddialog.cpp \
-    addresswidget.cpp \
     newaddresstab.cpp \
-    cryptography.cpp \
-    recovery.cpp \
-    backup.cpp \
-    wallet.cpp \
-    cryptocurrency.cpp \
     simplecrypt.cpp \
     registerdialog.cpp \
     startdialog.cpp \
     logindialog.cpp \
-    changepassworddialog.cpp
+    changepassworddialog.cpp \
+    walletwidget.cpp
 
 HEADERS += \
         cryptocompanion.h \
-    secdialog.h \
     user.h \
     tablemodel.h \
     adddialog.h \
-    addresswidget.h \
     newaddresstab.h \
-    cryptography.h \
-    recovery.h \
-    backup.h \
-    wallet.h \
-    cryptocurrency.h \
     simplecrypt.h \
     registerdialog.h \
     startdialog.h \
     logindialog.h \
-    changepassworddialog.h
+    changepassworddialog.h \
+    walletwidget.h
 
 FORMS += \
         cryptocompanion.ui

@@ -2,9 +2,8 @@
 #define USER_H
 
 #include <QString>
-#include "cryptography.h"
 
-class User : public Cryptography
+class User
 {
     QString firstName;
     QString lastName;
@@ -30,8 +29,6 @@ public:
     QString getRecoveryCode();
     QString getEncryptedString(QString strIn);
     QString getDecryptedString(QString strIn);
-    void printInfo();
-    void printName();
 };
 
 #endif // USER_H

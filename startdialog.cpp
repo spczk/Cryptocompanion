@@ -1,6 +1,6 @@
 #include "startdialog.h"
 #include "registerdialog.h"
-#include "addresswidget.h"
+#include "walletwidget.h"
 
 #include <QtWidgets>
 
@@ -10,7 +10,7 @@ StartDialog::StartDialog(QWidget *parent) : QDialog(parent)
 {
     registerButton = new QPushButton("Register");
     startButton = new QPushButton("Start");
-    cancelButton = new QPushButton("Cancel");
+    quitButton = new QPushButton("Quit");
 
     QGridLayout *gLayout = new QGridLayout;
     gLayout->setColumnStretch(3, 1);
@@ -18,7 +18,7 @@ StartDialog::StartDialog(QWidget *parent) : QDialog(parent)
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(registerButton);
     buttonLayout->addWidget(startButton);
-    buttonLayout->addWidget(cancelButton);
+    buttonLayout->addWidget(quitButton);
 
     gLayout->addLayout(buttonLayout, 1, 3, Qt::AlignRight);
 
@@ -28,7 +28,7 @@ StartDialog::StartDialog(QWidget *parent) : QDialog(parent)
 
     connect(registerButton, &QAbstractButton::clicked, this, &StartDialog::onRegisterClick);
     connect(startButton, &QAbstractButton::clicked, this, &QDialog::accept);
-    connect(cancelButton, &QAbstractButton::clicked, this, &QDialog::reject);
+    connect(quitButton, &QAbstractButton::clicked, qApp , &QApplication::quit);
 
     setWindowTitle("Cryptocompanion");
 
@@ -54,9 +54,6 @@ void StartDialog::onRegisterClick()
                 return;
             }
 
-            //User user(firstName, lastName, password);
-
-           // Cryptography crypto;
             SimpleCrypt simple;
             quint64 key = simple.generateKey();
             quint32 recoveryCode = simple.generateRecoveryCode();
@@ -76,36 +73,3 @@ void StartDialog::onRegisterClick()
         emit sendUserDetails(firstName, lastName, password);
     }
 }
-
-//void StartDialog::onStartClick()
-//{
-//    QString fileName = QFileDialog::getOpenFileName(this);
-
-//    QFile file(fileName);
-
-//    if (!file.open(QIODevice::ReadOnly)) {
-//        QMessageBox::information(this, tr("Unable to open file"),
-//            file.errorString());
-//        return;
-//    }
-
-
-//    QString encryptedFirstName;
-//    QString encryptedLastName;
-//    QString encryptedPassword;
-//    QString firstName;
-//    QString lastName;
-//    QString password;
-//    quint64 key;
-//    QDataStream in(&file);
-//    in >> key >> encryptedFirstName >> encryptedLastName >> encryptedPassword;
-
-//    SimpleCrypt simple(key);
-
-//    firstName = simple.decryptToString(encryptedFirstName);
-//    lastName = simple.decryptToString(encryptedLastName);
-//    password = simple.decryptToString(encryptedPassword);
-
-//    qInfo() << firstName << lastName << password;
-
-//}

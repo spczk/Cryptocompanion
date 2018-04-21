@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QDialog>
 #include "user.h"
-#include "addresswidget.h"
+#include "walletwidget.h"
 
 namespace Ui {
 class Cryptocompanion;
@@ -31,7 +31,7 @@ private:
     void createMenus();
     void changePass();
 
-    AddressWidget *addressWidget;
+    WalletWidget *walletWidget;
     QMenu *fileMenu;
     QMenu *toolMenu;
     QAction *openAct;

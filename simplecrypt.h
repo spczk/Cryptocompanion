@@ -204,8 +204,14 @@ public:
     QByteArray decryptToByteArray(QByteArray cypher) ;
 
     quint64 generateKey();
+    /*
+     * Generates a 64 bit key using QRandomGenerator, generator is system independent, because
+     * it gets a pointer to a system default generator
+     */
 
     quint32 generateRecoveryCode();
+
+    //Same as generateKey, but it generates 32 bit key
 
     //enum to describe options that have been used for the encryption. Currently only one, but
     //that only leaves room for future extensions like adding a cryptographic hash...
