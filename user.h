@@ -10,6 +10,7 @@ class User
     QString password;
     quint64 key;
     QString recoveryCode;
+
 public:
 
     User();
@@ -27,8 +28,6 @@ public:
     QString getPassword();
     quint64 getKey();
     QString getRecoveryCode();
-    QString getEncryptedString(QString strIn);
-    QString getDecryptedString(QString strIn);
 };
 
 #endif // USER_H

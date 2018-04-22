@@ -1,7 +1,7 @@
 #ifndef WALLETWIDGET_H
 #define WALLETWIDGET_H
 
-#include "newaddresstab.h"
+#include "newwallettab.h"
 #include "tablemodel.h"
 #include "simplecrypt.h"
 
@@ -20,13 +20,13 @@ public:
     void readFromFile(const QString &fileName);
     void writeToFile(const QString &fileName);
     void changePassword();
+    void login();
 
 public slots:
     void showAddEntryDialog();
-    void addEntry(QString name, QString address, QString publicKey, QString privateKey, QString passPhrase, QString wordCode, QString cryptocurrencyName);
+    void addEntry(QString name, QString cryptocurrencyName, QString address, QString publicKey, QString privateKey, QString passPhrase, QString wordCode);
     void editEntry();
     void removeEntry();
-    void login();
     void getUserFileDetails(quint64 key ,QString encFirstName, QString encLastName, QString encPassword, QString encRecoveryCode);
 
 signals:
@@ -39,8 +39,9 @@ private:
     SimpleCrypt simple;
     User user;
     TableModel *table;
-    NewAddressTab *newAddressTab;
+    NewWalletTab *newWalletTab;
     QSortFilterProxyModel *proxyModel;
+    QSortFilterProxyModel *allModel;
 };
 
 #endif // WALLETWIDGET_H

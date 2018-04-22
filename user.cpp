@@ -13,13 +13,6 @@ User::User(QString firstNameIn, QString lastNameIn, QString passwordIn)
   password = passwordIn;
 }
 
-User::User(quint64 key)
-{
-    firstName = "Jan";
-    lastName ="Kowalski";
-    password = "test";
-}
-
 User::~User()
 {
 }

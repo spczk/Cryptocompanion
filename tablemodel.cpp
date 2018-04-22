@@ -14,18 +14,19 @@ TableModel::TableModel(QList<Wallet> wallets, QObject *parent)
 
 int TableModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return wallets.size();
+    Q_UNUSED(parent); // removes warning of unused objects
+    return wallets.size(); //returns the size of our wallets QList
 }
 
 int TableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return 7;
+    return 7; //number of our columns - always 7 in this case
 }
 
 QVariant TableModel::data(const QModelIndex &index, int role) const
 {
+    //Getting our data to the model on the right place
     if (!index.isValid())
         return QVariant();
 
@@ -38,23 +39,24 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
         if (index.column() == 0)
             return wallet.name;
         else if (index.column() == 1)
-            return wallet.address;
-        else if (index.column() == 2)
-            return wallet.publicKey;
-        else if (index.column() == 3)
-            return wallet.privateKey;
-        else if (index.column() == 4)
-            return wallet.passPhrase;
-        else if (index.column() == 5)
-            return wallet.wordCode;
-        else if (index.column() == 6)
             return wallet.cryptocurrencyName;
+        else if (index.column() == 2)
+            return wallet.address;
+        else if (index.column() == 3)
+            return wallet.publicKey;
+        else if (index.column() == 4)
+            return wallet.privateKey;
+        else if (index.column() == 5)
+            return wallet.passPhrase;
+        else if (index.column() == 6)
+            return wallet.wordCode;
     }
     return QVariant();
 }
 
 QVariant TableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    //Setting our table headers
     if (role != Qt::DisplayRole)
         return QVariant();
 
@@ -64,22 +66,22 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
                 return tr("Name");
 
             case 1:
-                return tr("Address");
+                return tr("Cryptocurrency");
 
             case 2:
-                return tr("Public Key");
+                return tr("Address");
 
             case 3:
-                return tr("Private Key");
+                return tr("Public Key");
 
             case 4:
-                return tr("Pass Phrase");
+                return tr("Private Key");
 
             case 5:
-                return tr("Word Code");
+                return tr("Pass Phrase");
 
             case 6:
-                return tr("Cryptocurrencies");
+                return tr("Word Code");
 
             default:
                 return QVariant();
@@ -90,6 +92,7 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 
 bool TableModel::insertRows(int position, int rows, const QModelIndex &index)
 {
+    //Inserting rows to the model based on number of wallets in our QList
     Q_UNUSED(index);
     QList<Wallet>::iterator i;
     beginInsertRows(QModelIndex(), position, position + rows - 1);
@@ -103,6 +106,7 @@ bool TableModel::insertRows(int position, int rows, const QModelIndex &index)
 
 bool TableModel::removeRows(int position, int rows, const QModelIndex &index)
 {
+    //Part of remove entry - removes data from model
     Q_UNUSED(index);
     beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
@@ -115,6 +119,7 @@ bool TableModel::removeRows(int position, int rows, const QModelIndex &index)
 
 bool TableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    //Needed for editing entry - emits signal when data in model differs from specified one
     if (index.isValid() && role == Qt::EditRole) {
         int row = index.row();
 
@@ -123,17 +128,17 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
         if (index.column() == 0)
             wallet.name = value.toString();
         else if (index.column() == 1)
-            wallet.address = value.toString();
-        else if (index.column() == 2)
-            wallet.publicKey = value.toString();
-        else if (index.column() == 3)
-            wallet.privateKey = value.toString();
-        else if (index.column() == 4)
-            wallet.passPhrase = value.toString();
-        else if (index.column() == 5)
-            wallet.wordCode = value.toString();
-        else if (index.column() == 6)
             wallet.cryptocurrencyName = value.toString();
+        else if (index.column() == 2)
+            wallet.address = value.toString();
+        else if (index.column() == 3)
+            wallet.publicKey = value.toString();
+        else if (index.column() == 4)
+            wallet.privateKey = value.toString();
+        else if (index.column() == 5)
+            wallet.passPhrase = value.toString();
+        else if (index.column() == 6)
+            wallet.wordCode = value.toString();
         else
             return false;
 
@@ -147,6 +152,7 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
 }
 
 Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
+//Setting our items flags for our table model
 {
     if (!index.isValid())
         return Qt::ItemIsEnabled;
