@@ -12,8 +12,8 @@ int main(int argc, char *argv[])
     Cryptocompanion w;
     if (start.exec())
     {
-    w.login();
-    w.show();
+        w.login();
+        w.show();
     }
     return Cryptocompan.exec();
 }

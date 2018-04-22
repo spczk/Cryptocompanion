@@ -29,26 +29,26 @@ SOURCES += \
     user.cpp \
     tablemodel.cpp \
     adddialog.cpp \
-    newaddresstab.cpp \
     simplecrypt.cpp \
     registerdialog.cpp \
     startdialog.cpp \
     logindialog.cpp \
     changepassworddialog.cpp \
-    walletwidget.cpp
+    walletwidget.cpp \
+    newwallettab.cpp
 
 HEADERS += \
         cryptocompanion.h \
     user.h \
     tablemodel.h \
     adddialog.h \
-    newaddresstab.h \
     simplecrypt.h \
     registerdialog.h \
     startdialog.h \
     logindialog.h \
     changepassworddialog.h \
-    walletwidget.h
+    walletwidget.h \
+    newwallettab.h
 
 FORMS += \
         cryptocompanion.ui

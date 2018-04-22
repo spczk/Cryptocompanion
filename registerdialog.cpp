@@ -36,6 +36,12 @@ RegisterDialog::RegisterDialog(QWidget *parent)
     mainLayout->addLayout(gLayout);
     setLayout(mainLayout);
 
+    /*
+     * Connecting buttons with actions
+     * register - sets the dialog code to accepted
+     * cancel - sets the dialog code to rejected
+     */
+
     connect(registerButton, &QAbstractButton::clicked, this, &QDialog::accept);
     connect(cancelButton, &QAbstractButton::clicked, this, &QDialog::reject);
 

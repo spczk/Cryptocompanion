@@ -8,6 +8,7 @@
 
 StartDialog::StartDialog(QWidget *parent) : QDialog(parent)
 {
+    //Setting up the UI
     registerButton = new QPushButton("Register");
     startButton = new QPushButton("Start");
     quitButton = new QPushButton("Quit");
@@ -26,6 +27,13 @@ StartDialog::StartDialog(QWidget *parent) : QDialog(parent)
     mainLayout->addLayout(gLayout);
     setLayout(mainLayout);
 
+    /*
+     * Connecting buttons with actions
+     * register - starts the registration process - see onRegisterClick()
+     * start - starts the login process - see walletwidget.cpp WalletWidget::login()
+     * quit - closes the aplication
+     */
+
     connect(registerButton, &QAbstractButton::clicked, this, &StartDialog::onRegisterClick);
     connect(startButton, &QAbstractButton::clicked, this, &QDialog::accept);
     connect(quitButton, &QAbstractButton::clicked, qApp , &QApplication::quit);
@@ -36,6 +44,7 @@ StartDialog::StartDialog(QWidget *parent) : QDialog(parent)
 
 void StartDialog::onRegisterClick()
 {
+    //If register button was clicked - opens a register dialog and gets user data from it
     RegisterDialog regist;
 
     if (regist.exec()) {
@@ -45,6 +54,7 @@ void StartDialog::onRegisterClick()
 
         QString fileName = QFileDialog::getSaveFileName(this);
 
+        //Now user specifies a file, where he wants his data to be in
         if (!fileName.isEmpty()){
 
             QFile file(fileName);
@@ -54,6 +64,7 @@ void StartDialog::onRegisterClick()
                 return;
             }
 
+            //Generating a recovery code for user and displaying a window with it
             SimpleCrypt simple;
             quint64 key = simple.generateKey();
             quint32 recoveryCode = simple.generateRecoveryCode();
@@ -62,6 +73,9 @@ void StartDialog::onRegisterClick()
 
             QMessageBox::information(this, "Your recovery code", "Your recovery code, save it somewhere to be able to reset your password: \n\n" + recovery);
 
+
+            //Encrypting all of the user data created at the registration
+            //and writing it down to the file specified before
             QString encryptedFirstName= simple.encryptToString(firstName);
             QString encryptedLastName = simple.encryptToString(lastName);
             QString encryptedPassword = simple.encryptToString(password);
@@ -70,6 +84,5 @@ void StartDialog::onRegisterClick()
 
             out << key << encryptedFirstName << encryptedLastName << encryptedPassword << encryptedRecoveryCode;
         }
-        emit sendUserDetails(firstName, lastName, password);
     }
 }

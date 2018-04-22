@@ -16,13 +16,8 @@ class StartDialog : public QDialog
 
 public:
     StartDialog(QWidget *parent = 0);
-
-public slots:
     void onRegisterClick();
 
-signals:
-    void sendUserDetails(QString firstName, QString lastName, QString password);
-    void sendFileDetails();
 private:
     User user;
     SimpleCrypt simple;

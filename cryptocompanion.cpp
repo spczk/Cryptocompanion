@@ -28,6 +28,7 @@ Cryptocompanion::~Cryptocompanion()
 
 void Cryptocompanion::createMenus()
 {
+    //Creating the dropdown menus and connecting them with their actions
     fileMenu = menuBar()->addMenu(tr("&File"));
 
     openAct = new QAction(tr("&Open..."), this);
@@ -42,7 +43,7 @@ void Cryptocompanion::createMenus()
     fileMenu->addAction(changeAct);
     connect(changeAct, &QAction::triggered, this, &Cryptocompanion::changePass);
 
-    fileMenu->addSeparator();
+    fileMenu->addSeparator(); //Adds a solid line to separate text
 
     exitAct = new QAction(tr("E&xit"), this);
     fileMenu->addAction(exitAct);
@@ -66,8 +67,7 @@ void Cryptocompanion::createMenus()
     toolMenu->addAction(removeAct);
     connect(removeAct, &QAction::triggered, walletWidget, &WalletWidget::removeEntry);
 
-    connect(walletWidget, &WalletWidget::selectionChanged,
-        this, &Cryptocompanion::updateActions);
+    connect(walletWidget, &WalletWidget::selectionChanged, this, &Cryptocompanion::updateActions);
 }
 
 void Cryptocompanion::openFile()
@@ -85,6 +85,9 @@ void Cryptocompanion::saveFile()
 void Cryptocompanion::updateActions(const QItemSelection &selection)
 {
     QModelIndexList indexes = selection.indexes();
+
+    //Setting up Remove and Edit Entry clickable or not
+    //depending on model data - if it exists then they are clickable
 
     if (!indexes.isEmpty()) {
         removeAct->setEnabled(true);

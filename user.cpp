@@ -13,13 +13,6 @@ User::User(QString firstNameIn, QString lastNameIn, QString passwordIn)
   password = passwordIn;
 }
 
-User::User(quint64 key)
-{
-    firstName = "Jan";
-    lastName ="Kowalski";
-    password = "test";
-}
-
 User::~User()
 {
 }
@@ -31,6 +24,9 @@ User::User(quint64 keyIn,QString firstNameIn, QString lastNameIn, QString passwo
   password = passwordIn;
   key = keyIn;
 }
+
+//get - gets the variable from user object
+//set - sets the variable in user object
 
 void User::setKey(quint64 keyIn)
 {

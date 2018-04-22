@@ -1,18 +1,20 @@
 #include "adddialog.h"
-#include "newaddresstab.h"
+#include "newwallettab.h"
 
 #include <QtWidgets>
 
-NewAddressTab::NewAddressTab(QWidget *parent)
+NewWalletTab::NewWalletTab(QWidget *parent)
 {
     Q_UNUSED(parent);
 
+    //String to display on our newWalletTab
     descriptionLabel = new QLabel(tr("There aren't currently any wallet information in your account. "
                                       "\nClick Add to add wallet information."));
 
+    //Setting up the UI
     addButton = new QPushButton(tr("Add"));
 
-    connect(addButton, &QAbstractButton::clicked, this, &NewAddressTab::addEntry);
+    connect(addButton, &QAbstractButton::clicked, this, &NewWalletTab::addEntry);
 
     mainLayout = new QVBoxLayout;
     mainLayout->addWidget(descriptionLabel);
@@ -21,18 +23,19 @@ NewAddressTab::NewAddressTab(QWidget *parent)
     setLayout(mainLayout);
 }
 
-void NewAddressTab::addEntry()
+void NewWalletTab::addEntry()
 {
+    //Opening add dialog, getting data out of text fields and sending a signal with it
     AddDialog aDialog;
 
     if (aDialog.exec()) {
         QString name = aDialog.nameText->text();
+        QString cryptocurrencyName = aDialog.cryptocurrencyNameText->text();
         QString address = aDialog.addressText->text();
         QString publicKey = aDialog.publicKeyText->text();
         QString passPhrase = aDialog.passPhraseText->text();
         QString privateKey = aDialog.privateKeyText->text();
         QString wordCode = aDialog.wordCodeText->text();
-        QString cryptocurrencyName=  aDialog.cryptocurrencyNameText->text();
-        emit sendDetails(name, address, publicKey, privateKey, passPhrase, wordCode, cryptocurrencyName);
+        emit sendDetails(name, cryptocurrencyName, address, publicKey, privateKey, passPhrase, wordCode);
     }
 }

@@ -5,6 +5,7 @@
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent)
 {
+    //Setting up the UI of the dialog
     nameLabel = new QLabel("Name");
     passwordLabel = new QLabel("Password");
     loginButton = new QPushButton("Login");
@@ -30,7 +31,11 @@ LoginDialog::LoginDialog(QWidget *parent)
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(gLayout);
     setLayout(mainLayout);
-
+    /*
+     * Connecting buttons with actions
+     * login - sets the dialog code to accepted
+     * cancel - sets the dialog code to rejected
+     */
     connect(loginButton, &QAbstractButton::clicked, this, &QDialog::accept);
     connect(cancelButton, &QAbstractButton::clicked, this, &QDialog::reject);
 

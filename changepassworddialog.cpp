@@ -5,6 +5,7 @@
 ChangePasswordDialog::ChangePasswordDialog(QWidget *parent)
     : QDialog(parent)
 {
+  //Setting up the UI of the dialog
     recoveryCodeLabel = new QLabel("Recovery Code");
     newPasswordLabel = new QLabel("New Password");
     changeButton = new QPushButton("Change");
@@ -30,6 +31,12 @@ ChangePasswordDialog::ChangePasswordDialog(QWidget *parent)
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(gLayout);
     setLayout(mainLayout);
+
+    /*
+     * Connecting buttons with actions
+     * ok - sets the dialog code to accepted
+     * cancel - sets the dialog code to rejected
+     */
 
     connect(changeButton, &QAbstractButton::clicked, this, &QDialog::accept);
     connect(cancelButton, &QAbstractButton::clicked, this, &QDialog::reject);
